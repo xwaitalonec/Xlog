@@ -2,7 +2,6 @@ package com.linkzhang.xloglibrary;
 
 import android.content.Context;
 import android.os.Environment;
-import android.support.annotation.IntDef;
 
 import com.tencent.mars.xlog.Log;
 import com.tencent.mars.xlog.Xlog;
@@ -25,6 +24,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import androidx.annotation.IntDef;
+
 /**
  * @author linkzhang
  * @describe
@@ -45,7 +46,6 @@ public class L {
     }
 
     private static final char[] T = new char[]{'V', 'D', 'I', 'W', 'E', 'A'};
-
     private static final int FILE = 0x10;
     private static final int JSON = 0x20;
     private static final int XML  = 0x30;
@@ -403,7 +403,10 @@ public class L {
             sub = msg.substring(index, len);
             print(type, tag,  LEFT_BORDER + sub );
         } else {
-            print(type, tag, msg);
+            String[] data = msg.split(LINE_SEP);
+            for (String s:data) {
+                print(type, tag, s);
+            }
         }
         print(type, tag, BOTTOM_BORDER);
     }
