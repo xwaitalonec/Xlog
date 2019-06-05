@@ -403,15 +403,23 @@ public class L {
             sub = msg.substring(index, len);
             print(type, tag,  LEFT_BORDER + sub );
         } else {
-            String[] data = msg.split(LINE_SEP);
-            for (String s:data) {
-                print(type, tag, s);
-            }
+            print(type, tag, msg);
         }
         print(type, tag, BOTTOM_BORDER);
     }
 
     private static void print(final int type, final String tag, final String msg) {
+        String[] data = msg.split(LINE_SEP);
+        if (data.length > 1) {
+            for (String s : data) {
+                printLine(type, tag, s);
+            }
+        }else{
+            printLine(type,tag,msg);
+        }
+    }
+
+    private static void printLine(final int type, final String tag, final String msg) {
         switch (type) {
             case V:
                 android.util.Log.v(tag, msg);
