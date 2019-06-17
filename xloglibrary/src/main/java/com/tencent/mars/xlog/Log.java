@@ -44,6 +44,8 @@ public class Log {
 
         int getLogLevel();
 
+        void setUploadLogStart();
+
         void appenderClose();
 
         void appenderFlush(boolean isSync);
@@ -113,6 +115,11 @@ public class Log {
         }
 
         @Override
+        public void setUploadLogStart() {
+
+        }
+
+        @Override
         public void appenderClose() {
 
         }
@@ -142,6 +149,12 @@ public class Log {
     public static void appenderFlush(boolean isSync) {
         if (logImp != null) {
             logImp.appenderFlush(isSync);
+        }
+    }
+
+    public static void setUploadLogStart(){
+        if (logImp != null) {
+            logImp.setUploadLogStart();
         }
     }
 

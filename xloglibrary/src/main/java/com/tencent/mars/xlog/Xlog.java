@@ -38,6 +38,7 @@ public class Xlog implements Log.LogImp {
         }
 
         appenderOpen(level, mode, cacheDir, logDir, nameprefix,7*24*60*60,"");
+
     }
 
     private static String decryptTag(String tag) {
@@ -93,6 +94,9 @@ public class Xlog implements Log.LogImp {
     public static native void appenderOpen(int level, int mode, String cacheDir, String logDir, String nameprefix, int cacheDays, String pubkey);
 
     public static native void setMaxFileSize(long size);
+
+    @Override
+    public native void setUploadLogStart();
 
     /**
      * should be called before appenderOpen to take effect

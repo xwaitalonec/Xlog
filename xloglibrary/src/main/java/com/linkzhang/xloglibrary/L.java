@@ -2,6 +2,7 @@ package com.linkzhang.xloglibrary;
 
 import android.content.Context;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.tencent.mars.xlog.Log;
 import com.tencent.mars.xlog.Xlog;
@@ -15,7 +16,9 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -39,6 +42,8 @@ public class L {
     public static final int W = Log.LEVEL_WARNING;
     public static final int E = Log.LEVEL_ERROR;
     public static final int A = Log.LEVEL_FATAL;
+
+
 
     @IntDef({V, D, I, W, E})
     @Retention(RetentionPolicy.SOURCE)
@@ -88,6 +93,16 @@ public class L {
         System.loadLibrary("marsxlog");
         Xlog.setConsoleLogOpen(false);
         Log.setLogImp(new Xlog());
+    }
+
+
+    public void build() {
+        Log.appenderClose();
+        Xlog.open(false,sFileFilter,
+                Xlog.AppednerModeAsync,
+                L.dir,
+                L.dir == null ? defaultDir : L.dir,
+                sFilePrefix);
     }
 
     public static L config(Context context) {
@@ -155,12 +170,6 @@ public class L {
 
     public L setsFilePrefix(String filePrefix) {
         if (!isSpace(filePrefix)) L.sFilePrefix = filePrefix;
-        Log.appenderClose();
-        Xlog.appenderOpen(sFileFilter,
-                Xlog.AppednerModeAsync,
-                L.dir,
-                L.dir == null ? defaultDir : L.dir,
-                sFilePrefix,7*24*60*60,"");
         return this;
     }
 
@@ -281,6 +290,10 @@ public class L {
         Log.appenderFlush(false);
     }
 
+    public static void flush(boolean isSync) {
+        Log.appenderFlush(isSync);
+    }
+
     public static void destroy() {
         Log.appenderClose();
     }
@@ -355,6 +368,53 @@ public class L {
             }
         }
         return body;
+    }
+
+    public static List<String> getUploadLogFiles(){
+        L.flush(true);
+        Log.setUploadLogStart();
+        List<String> uploadLogs = new ArrayList<>();
+        if (TextUtils.isEmpty(defaultDir)){
+            return uploadLogs;
+        }
+        File logDir = new File(defaultDir);
+        File[] logFiles = logDir.listFiles();
+        String prefix= ".xlog";
+        if (logFiles.length>0){
+            for (File logFile:logFiles){
+                System.out.println("fileName:"+logFile.getAbsolutePath());
+                if (logFile.getName().endsWith(prefix)) {
+                    String fileName = logFile.getName().replace(prefix, "");
+                    String newName = logFile.getParent() + File.separator + fileName + "_" + System.currentTimeMillis() / 1000+prefix;
+                    System.out.println("reName from"+fileName+" to "+newName);
+                    if (reName(logFile, newName)) {
+                        uploadLogs.add(newName);
+                    }
+                }
+            }
+        }
+        return uploadLogs;
+    }
+
+    public static boolean reName(File file,String newname) {//文件重命名
+        //Scanner scanner=new Scanner(System.in);
+
+        if(file.exists()) {
+            File newfile=new File(newname);//创建新名字的抽象文件
+            if(file.renameTo(newfile)) {
+                System.out.println("重命名成功！");
+                return true;
+            }
+            else {
+                System.out.println("重命名失败！新文件名已存在");
+                return false;
+            }
+        }
+        else {
+            System.out.println("重命名文件不存在！");
+            return false;
+        }
+
     }
 
     private static String formatJson(String json) {
