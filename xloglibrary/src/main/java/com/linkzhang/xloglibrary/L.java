@@ -42,7 +42,7 @@ public class L {
     public static final int W = Log.LEVEL_WARNING;
     public static final int E = Log.LEVEL_ERROR;
     public static final int A = Log.LEVEL_FATAL;
-
+    private static long sFileSize;
 
 
     @IntDef({V, D, I, W, E})
@@ -103,6 +103,7 @@ public class L {
                 L.dir,
                 L.dir == null ? defaultDir : L.dir,
                 sFilePrefix);
+        Xlog.setMaxFileSize(L.sFileSize);
     }
 
     public static L config(Context context) {
@@ -160,6 +161,11 @@ public class L {
 
     public L setConsoleFilter(@TYPE int consoleFilter) {
         L.sConsoleFilter = consoleFilter;
+        return this;
+    }
+
+    public L setMaxFileSize(long fileSize){
+        L.sFileSize = fileSize;
         return this;
     }
 
