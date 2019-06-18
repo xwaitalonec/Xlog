@@ -390,11 +390,11 @@ public class L {
             for (File logFile:logFiles){
                 System.out.println("fileName:"+logFile.getAbsolutePath());
                 if (logFile.getName().endsWith(prefix)) {
-                    String fileName = logFile.getName().replace(prefix, "");
-                    String newName = logFile.getParent() + File.separator + fileName + "_" + System.currentTimeMillis() / 1000+prefix;
-                    System.out.println("reName from"+fileName+" to "+newName);
-                    if (reName(logFile, newName)) {
-                        uploadLogs.add(newName);
+                    String name = logFile.getName().replace(prefix, "");
+                    String newName =  name + "_" + System.currentTimeMillis()+prefix;
+                    String newPath = logDir.getParent()+"/xlog_upload/";
+                    if (moveTotherFolders(logFile.getAbsolutePath(),newPath,newName)) {
+                        uploadLogs.add(newPath+newName);
                     }
                 }
             }
@@ -402,26 +402,26 @@ public class L {
         return uploadLogs;
     }
 
-    public static boolean reName(File file,String newname) {//文件重命名
-        //Scanner scanner=new Scanner(System.in);
+    private static boolean moveTotherFolders(String filePath,String toPath,String newName){
+        try {
+            File file = new File(filePath);
+            File tmpFile = new File(toPath);//获取文件夹路径
+            if(!tmpFile.exists()){//判断文件夹是否创建，没有创建则创建新文件夹
+                tmpFile.mkdirs();
+            }
 
-        if(file.exists()) {
-            File newfile=new File(newname);//创建新名字的抽象文件
-            if(file.renameTo(newfile)) {
-                System.out.println("重命名成功！");
+            if (file.renameTo(new File(toPath+newName))) {
+                System.out.println("文件移动成功！from:"+filePath+" to:"+toPath);
                 return true;
+            } else {
+                System.out.println("文件移动失败！from:"+filePath+" to:"+toPath);
             }
-            else {
-                System.out.println("重命名失败！新文件名已存在");
-                return false;
-            }
-        }
-        else {
-            System.out.println("重命名文件不存在！");
-            return false;
-        }
+        } catch (Exception e) {
 
+        }
+        return false;
     }
+
 
     private static String formatJson(String json) {
         try {
