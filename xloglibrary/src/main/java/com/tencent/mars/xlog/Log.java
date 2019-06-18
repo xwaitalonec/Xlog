@@ -310,19 +310,19 @@ public class Log {
         final StringBuilder sb = new StringBuilder();
         try {
             sb.append("VERSION.RELEASE:[").append(android.os.Build.VERSION.RELEASE);
-            sb.append("] VERSION.CODENAME:[").append(android.os.Build.VERSION.CODENAME);
-            sb.append("] VERSION.INCREMENTAL:[").append(android.os.Build.VERSION.INCREMENTAL);
-            sb.append("] BOARD:[").append(android.os.Build.BOARD);
-            sb.append("] DEVICE:[").append(android.os.Build.DEVICE);
-            sb.append("] DISPLAY:[").append(android.os.Build.DISPLAY);
-            sb.append("] FINGERPRINT:[").append(android.os.Build.FINGERPRINT);
-            sb.append("] HOST:[").append(android.os.Build.HOST);
-            sb.append("] MANUFACTURER:[").append(android.os.Build.MANUFACTURER);
-            sb.append("] MODEL:[").append(android.os.Build.MODEL);
-            sb.append("] PRODUCT:[").append(android.os.Build.PRODUCT);
-            sb.append("] TAGS:[").append(android.os.Build.TAGS);
-            sb.append("] TYPE:[").append(android.os.Build.TYPE);
-            sb.append("] USER:[").append(android.os.Build.USER).append("]");
+            sb.append("]\nVERSION.CODENAME:[").append(android.os.Build.VERSION.CODENAME);
+            sb.append("]\nVERSION.INCREMENTAL:[").append(android.os.Build.VERSION.INCREMENTAL);
+            sb.append("]\nBOARD:[").append(android.os.Build.BOARD);
+            sb.append("]\nDEVICE:[").append(android.os.Build.DEVICE);
+            sb.append("]\nDISPLAY:[").append(android.os.Build.DISPLAY);
+            sb.append("]\nFINGERPRINT:[").append(android.os.Build.FINGERPRINT);
+            sb.append("]\nHOST:[").append(android.os.Build.HOST);
+            sb.append("]\nMANUFACTURER:[").append(android.os.Build.MANUFACTURER);
+            sb.append("]\nMODEL:[").append(android.os.Build.MODEL);
+            sb.append("]\nPRODUCT:[").append(android.os.Build.PRODUCT);
+            sb.append("]\nTAGS:[").append(android.os.Build.TAGS);
+            sb.append("]\nTYPE:[").append(android.os.Build.TYPE);
+            sb.append("]\nUSER:[").append(android.os.Build.USER).append("]");
         } catch (Throwable e) {
             e.printStackTrace();
         }
