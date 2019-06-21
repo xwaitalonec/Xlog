@@ -386,7 +386,7 @@ public class L {
         File logDir = new File(defaultDir);
         File[] logFiles = logDir.listFiles();
         String prefix= ".xlog";
-        if (logFiles.length>0){
+        if (logFiles!=null && logFiles.length>0){
             for (File logFile:logFiles){
                 System.out.println("fileName:"+logFile.getAbsolutePath());
                 if (logFile.getName().endsWith(prefix)) {
